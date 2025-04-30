@@ -1,9 +1,9 @@
 # AAE6102-Assignment2
 AAE6102-Assignment2
 
-Task 1 prompt: [ChatGPT-4o prompt for Task 1](https://chatgpt.com/c/6811d7ca-af38-8004-a5f5-0c95805e29a6)
-Task 4 prompt: [ChatGPT-4o prompt for Task 4](https://chatgpt.com/share/6811eaf4-f9c0-8004-b3a4-0a24a889b825)
-Task 5 prompt: []
+Task 1 prompt: [ChatGPT-4o prompt for Task 1](https://chatgpt.com/c/6811d7ca-af38-8004-a5f5-0c95805e29a6) </br>
+Task 4 prompt: [ChatGPT-4o prompt for Task 4](https://chatgpt.com/share/6811eaf4-f9c0-8004-b3a4-0a24a889b825) </br>
+Task 5 prompt: [ChatGPT-4o prompt for Task 5](https://chatgpt.com/share/6811f1d8-d1ec-8004-8ce2-fb8980c1bc09)
 ## Task 1 – Differential GNSS Positioning
 A **comprehensive summary** of each method:
 
@@ -67,7 +67,7 @@ Precision in orbit determination underpins any satellite-based navigation servic
 The Earth’s gravitational potential exhibits high spatial frequency content that induces periodic variations in LEO orbital elements.  To constrain orbit errors below the decimeter level, gravity field models of degree and order ≥ 10 must be coupled with recursive estimation of time-varying spherical harmonics.  Inadequate modeling leads to meter-scale along- and cross-track deviations within hours, severely degrading navigation solutions.  
 
 - **Atmospheric Drag**
-Atmospheric drag is the dominant non-gravitational perturbation in LEO, driven by thermospheric density fluctuations that respond rapidly to solar and geomagnetic forcing.  Empirical models such as JB2008 reduce along-track dispersion but leave residual uncertainties of several centimeters per minute of propagation  ([Modelling and prediction of atmospheric drag coefficients in LEO ...](https://www.sciencedirect.com/science/article/abs/pii/S0273117724010962?utm_source=chatgpt.com), [Atmospheric drag uncertainty quantification for orbit determination ...](https://www.sciencedirect.com/science/article/abs/pii/S0273117725003540?utm_source=chatgpt.com)).  Incorporating on-board accelerometer measurements can partially mitigate drag mis-modeling but entails added mass and power consumption constraints.  
+Atmospheric drag is the dominant non-gravitational perturbation in LEO, driven by thermospheric density fluctuations that respond rapidly to solar and geomagnetic forcing.  Empirical models such as JB2008 reduce along-track dispersion but leave residual uncertainties of several centimeters per minute of propagation.  Incorporating on-board accelerometer measurements can partially mitigate drag mis-modeling but entails added mass and power consumption constraints.  
 
 - **Rapid Orbital Variation and High Velocity**
 LEO platforms orbit with velocities of 7.1–7.8 km/s and complete a revolution in 90–110 minutes, resulting in line-of-sight geometry changes of several degrees per second.  Such rapid dynamics shorten the coherence time for batch orbit fits and amplify Doppler estimation errors, necessitating sub-second update rates in navigation filters to preserve measurement integrity.  
@@ -91,7 +91,84 @@ Assimilating LEO-derived observables into GNSS workflows requires adapting algor
 Standard Precise Point Positioning (PPP) and Real-Time Kinematic (RTK) filters assume orbit and clock dynamics orders of magnitude slower than those of LEO platforms.  High-rate Extended Kalman Filters (EKF) or particle filters must augment state vectors with drag coefficients and oscillator drift terms to accurately track LEO behavior in real time.  
 
 - **Synchronization and Time Transfer Issues**
-Unlike GNSS satellites equipped with rubidium or cesium clocks, LEO communications satellites use less stable oscillators without broadcast clock corrections.  Real-time onboard synchronization via embedded GNSS receivers or inter-satellite links (ISLs) is essential to constrain clock offsets below 1 ns, a requirement for sub-decimeter positioning.  
+Unlike GNSS satellites equipped with rubidium or cesium clocks, LEO communications satellites use less stable oscillators without broadcast clock corrections.  Real-time onboard synchronization via embedded GNSS receivers or inter-satellite links (ISLs) is essential to constrain clock offsets below 1 ns, a requirement for sub-decimeter positioning.
 
 - **Multi-Sensor and Multi-Constellation Fusion Challenges**
 To achieve robust coverage and mitigate individual measurement shortcomings, LEO observables must be fused with terrestrial GNSS, inertial sensors, and potentially geostationary “augmentation” signals.  This fusion entails harmonizing disparate update rates, noise characteristics, and error correlations.  Cooperative architectures—whereby LEO operators share precise ephemerides and clock corrections—can alleviate receiver burden but face interoperability and standardization hurdles.  
+_____________________________________________________
+
+## Task 5 – GNSS Remote Sensing
+ 
+Global Navigation Satellite System Reflectometry (GNSS-R) has emerged as a powerful tool in Earth observation, enabling passive, bistatic radar sensing for geophysical monitoring over land, ocean, and cryosphere. By exploiting reflected GNSS signals, particularly at L-band frequencies, GNSS-R enables continuous, all-weather monitoring of soil moisture, sea surface height, and ice dynamics. This essay discusses the underlying physics of GNSS-R, including scattering models, key observables, and the impact of signal characteristics on retrieval performance. Emerging trends such as AI-driven inversion techniques and small-satellite constellations are examined, along with challenges arising from error sources and retrieval ambiguities. Comparisons with traditional remote sensing methods are also provided.
+
+
+### 5.1 Introduction  
+
+GNSS Reflectometry (GNSS-R) leverages opportunistic reflections of GNSS signals off the Earth's surface to infer environmental parameters. As a bistatic radar technique, GNSS-R repurposes existing satellite infrastructure—such as GPS, Galileo, and BeiDou—for passive sensing. The reflected signals, captured by a low-cost receiver aboard an aircraft or low-Earth orbit (LEO) satellite, carry signatures of the surface’s dielectric and geometric properties. Unlike traditional radiometers and active scatterometers, GNSS-R offers high temporal resolution, low power requirements, and resilience under cloudy or rainy conditions.
+
+Recent missions, notably NASA's CYGNSS and ESA’s PARIS (Passive Reflectometry and Interferometry System), have expanded the spatial and scientific reach of GNSS-R, validating its potential for operational Earth monitoring. However, the technique is not without limitations: signal ambiguity, sensitivity to surface roughness, and ionospheric distortion complicate data interpretation. This essay delves into the physics, observables, applications, and evolving landscape of GNSS-R, highlighting both its strengths and outstanding challenges.
+
+### 5.2 Physics of GNSS-R Signal Scattering  
+
+GNSS-R fundamentally relies on bistatic radar principles, where a signal transmitted from a GNSS satellite is scattered by the Earth's surface and received by an off-nadir antenna. The received power $\(P_r\)$ is modeled by the bistatic radar equation:  
+```math
+P_r = P_tG_tG_r\frac{\lambda^2}{(4\pi)^3}\,\frac{\sigma^0}{R_t^2\,R_r^2}
+```
+where **$P_t$** is the transmitted power, **$G_t$** and **$G_r$** are antenna gains, **$\lambda$** the signal wavelength, and **$R_t$**, **$R_r$** the ranges from the transmitter and receiver to the scattering point. The bistatic radar cross-section **$\sigma^0$** quantifies the reflectivity of the surface and is decomposed into coherent (specular) and incoherent (diffuse) terms using the Kirchhoff approximation. The specular reflection dominates over smooth surfaces, while rough or dynamic surfaces (e.g., oceans) produce Doppler-spread diffuse returns.
+
+The Fresnel reflection coefficients further refine the scattering model, especially for soil and ice surfaces. These depend on polarization and the complex dielectric constant of the surface. At L-band (1.2–1.5 GHz), soil permittivity increases from 2–5 (dry) to 20–30 (wet), dramatically altering reflection strength. The reflection coefficients for perpendicular and parallel polarizations are:
+```math
+r_\perp = \frac{\cos\theta_i - \sqrt{\varepsilon_2 - \sin^2\theta_i}}{\cos\theta_i + \sqrt{\varepsilon_2 - \sin^2\theta_i}}, \quad
+r_\parallel = \frac{\varepsilon_2\cos\theta_i - \sqrt{\varepsilon_2 - \sin^2\theta_i}}{\varepsilon_2\cos\theta_i + \sqrt{\varepsilon_2 - \sin^2\theta_i}}.
+```
+These are sensitive to the volumetric soil moisture, enabling retrieval using semi-empirical dielectric models like Dobson and Mironov.
+
+The Doppler and time-delay characteristics of the reflected signals are captured via the Delay-Doppler Map (DDM), which is the convolution of the surface scattering function \(S(\tau,f)\) with the Woodward Ambiguity Function (WAF):
+```math
+\chi(\tau, f) = \int s(t)\,s^*(t+\tau)\,e^{-j2\pi f t}\,\mathrm{d}t.
+```
+The DDM shows a bright specular peak and a horseshoe-shaped diffuse tail whose extent relates to surface roughness and motion. These features are central to retrieving parameters such as wind speed and wave height.
+
+
+### 5.3 Key Observables and Applications  
+
+The primary GNSS-R observables include:
+
+- **Delay-Doppler Maps (DDMs):** 2D distributions of reflected power in delay and Doppler, sensitive to surface geometry and roughness.
+- **Signal-to-Noise Ratio (SNR):** Varies with reflection strength and coherence.
+- **Polarization Ratio:** Indicates surface moisture or dielectric discontinuity.
+
+GNSS-R has proven effective across multiple domains:
+- **Soil Moisture:** Fresnel amplitude variations from specular reflections enable retrieval of volumetric moisture with ~0.04–0.06 m³/m³ RMSE.
+- **Sea Surface Altimetry:** DDM leading edge timing allows sub-decimeter precision in calm waters.
+- **Cryosphere Monitoring:** Signal attenuation and scattering off snow/ice inform freeze–thaw transitions and ice sheet dynamics.
+
+
+### 5.4 Emerging Trends and Technology  
+
+The launch of NASA's CYGNSS constellation—a network of 8 LEO microsatellites using GPS reflections—has demonstrated GNSS-R’s scalability and resilience under intense weather. The ESA PARIS concept aims to leverage Galileo's higher bandwidth signals (e.g., E6) for finer resolution.
+
+The contrast between GNSS signals is notable. For example, Galileo E6 (10.23 MHz chip rate) offers:
+- 10× better range resolution (~15 m vs. 150 m for GPS L1 C/A).
+- Improved Doppler discrimination (~50 Hz vs. ~500 Hz), enhancing wind retrieval.
+
+Machine learning and AI are increasingly applied to invert DDMs into geophysical variables. Neural networks trained on synthetic DDMs and in-situ measurements have shown promise in reducing bias and enhancing retrieval accuracy across heterogeneous terrains.
+
+
+### 5.5 Challenges and Comparisons  
+
+Despite its advantages, GNSS-R faces notable challenges:
+- **Ionospheric Distortion:** Can shift phase/delay, particularly at low elevation angles.
+- **Surface Roughness:** Increases diffuse scattering, complicating coherent retrieval.
+- **Geometric Dilution of Precision (GDOP):** Limits spatial accuracy in sparse configurations.
+
+Compared with traditional **scatterometers**, GNSS-R has lower power and cost, but less control over illumination geometry. Compared with **radiometers**, GNSS-R provides better spatial resolution and sensitivity to surface geometry but lacks direct emission measurements.
+
+
+### 5.6 Conclusion  
+
+GNSS Reflectometry has transitioned from an experimental technique to a viable operational tool in Earth observation. By exploiting L-band reflections and delay-Doppler signal processing, it enables continuous, all-weather monitoring of critical environmental variables. As missions like CYGNSS and PARIS mature, and as AI-driven retrieval algorithms improve, GNSS-R stands poised to complement and enhance traditional remote sensing systems—offering a low-cost, high-frequency, and globally scalable approach to observing a changing Earth.
+
+
+
+
