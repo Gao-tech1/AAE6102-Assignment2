@@ -4,7 +4,25 @@ AAE6102-Assignment2
 Task 1 prompt: [ChatGPT-4o prompt for Task 1](https://chatgpt.com/c/6811d7ca-af38-8004-a5f5-0c95805e29a6) </br>
 Task 4 prompt: [ChatGPT-4o prompt for Task 4](https://chatgpt.com/share/6811eaf4-f9c0-8004-b3a4-0a24a889b825) </br>
 Task 5 prompt: [ChatGPT-4o prompt for Task 5](https://chatgpt.com/share/6811f1d8-d1ec-8004-8ce2-fb8980c1bc09)
-## Task 1 – Differential GNSS Positioning
+
+- [AAE6102-Assignment2](#aae6102-assignment2)
+  * [Task 1 – Differential GNSS Positioning](#task-1---differential-gnss-positioning)
+    + [1.1 Principles of Each GNSS Technique](#11-principles-of-each-gnss-technique)
+    + [1.2 Comparative Analysis](#12-comparative-analysis)
+    + [1.3 Conclusion](#13-conclusion)
+  * [Task 4 – LEO Satellites for Navigation](#task-4---leo-satellites-for-navigation)
+    + [4.1 Orbital Mechanics](#41-orbital-mechanics)
+    + [4.2 Signal Capture](#42-signal-capture)
+    + [4.3 System Integration](#43-system-integration)
+  * [Task 5 – GNSS Remote Sensing](#task-5---gnss-remote-sensing)
+    + [5.1 Introduction](#51-introduction)
+    + [5.2 Physics of GNSS-R Signal Scattering](#52-physics-of-gnss-r-signal-scattering)
+    + [5.3 Key Observables and Applications](#53-key-observables-and-applications)
+    + [5.4 Emerging Trends and Technology](#54-emerging-trends-and-technology)
+    + [5.5 Challenges and Comparisons](#55-challenges-and-comparisons)
+    + [5.6 Conclusion](#56-conclusion)    
+    
+## Task1 – Differential GNSS Positioning
 A **comprehensive summary** of each method:
 
 - **Differential GNSS (DGNSS)** leverages a nearby reference station to broadcast pseudorange corrections, achieving sub-meter accuracy almost instantly, but its performance degrades with distance from the station and it offers only modest improvement over standalone GNSS.  
@@ -46,7 +64,7 @@ A **comprehensive summary** of each method:
   - **PPP**: Needs precise orbit/clock streams via NTRIP or L-band, and more computational resources; some Android PPP apps exist, but performance depends on dual-frequency, raw-data access, and link stability. 
   - **PPP-RTK**: Similar infrastructure demands as PPP plus subscription to a correction service; emerging smartphone support promises significant accuracy gains but adds complexity in configuration and cost.
 
-  ### 1.3 Conclusion
+### 1.3 Conclusion
 | Technique   | Pros                                                         | Cons                                                                  |
 |-------------|--------------------------------------------------------------|-----------------------------------------------------------------------|
 | **DGNSS**   | - Sub-meter accuracy almost instantly<br>- Wide SBAS coverage (e.g. WAAS/EGNOS)<br>- Low computation & data requirements | - Accuracy degrades with distance from reference station<br>- Typically only ~1 m improvement over standalone GNSS |
@@ -56,7 +74,7 @@ A **comprehensive summary** of each method:
 
   For smartphone navigation, the choice hinges on application needs and available infrastructure. **DGNSS** offers rapid sub-meter accuracy with minimal setup, making it ideal for broad coverage and low cost. **RTK** is unmatched for real-time centimeter precision but requires a robust correction link. **PPP** provides global coverage without a local base station, albeit with longer convergence. **PPP-RTK** strikes a balance by marrying PPP’s ubiquity with RTK’s speed, delivering high accuracy quickly, at the expense of specialized correction services and subscription fees. Choose the method that best aligns with your accuracy targets, latency tolerance, and system complexity.
 
-____________________________________________
+---
 ## Task 4 – LEO Satellites for Navigation
 The deployment of Low Earth Orbit (LEO) communications constellations for positioning promises ultra-low latency and improved geometry diversity compared to Medium Earth Orbit (MEO) GNSS systems, yet is constrained by three fundamental challenges: orbital mechanics, signal capture, and system integration.  Each dimension critically influences the attainable accuracy, reliability, and continuity of opportunistic positioning services using non-dedicated LEO platforms.  Orbital mechanics determines how precisely a satellite’s trajectory can be known in real time; signal capture governs the recoverable observables from proprietary communication links; and system integration dictates how rapidly and robustly these novel measurements can be assimilated into established GNSS processing frameworks.  
 
@@ -95,7 +113,7 @@ Unlike GNSS satellites equipped with rubidium or cesium clocks, LEO communicatio
 
 - **Multi-Sensor and Multi-Constellation Fusion Challenges**
 To achieve robust coverage and mitigate individual measurement shortcomings, LEO observables must be fused with terrestrial GNSS, inertial sensors, and potentially geostationary “augmentation” signals.  This fusion entails harmonizing disparate update rates, noise characteristics, and error correlations.  Cooperative architectures—whereby LEO operators share precise ephemerides and clock corrections—can alleviate receiver burden but face interoperability and standardization hurdles.  
-_____________________________________________________
+---
 
 ## Task 5 – GNSS Remote Sensing
  
