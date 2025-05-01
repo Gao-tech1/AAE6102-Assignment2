@@ -96,9 +96,9 @@ Based on the analysis of the "Urban" dataset and the skymask provided, the follo
      - **NLOS Detection**: For satellites flagged as blocked (e.g., SV3, SV18), simulate signal reflection paths using a simplified urban canyon model (e.g., building heights and locations near the ground truth). Adjust pseudorange measurements by estimating additional path delays caused by reflections.  
      - **Residual Analysis**: Iteratively refine the position solution by minimizing residuals between corrected pseudoranges and the geometric range calculated from the receiver’s estimated position.  
 <div style="display: flex; justify-content: space-between;">
-  <img src="Task2-acuiredsatellites.jpg" alt="Image 1" style="width:33%;"/>
-  <img src="skymask.png" alt="Image 2" style="width:33%;"/>
-  <img src="WLS Position.png" alt="Image 3" style="width:33%;"/>
+  <img src="Task2-acuiredsatellites.jpg" alt="Image 1" style="width:30%;"/>
+  <img src="skymask.png" alt="Image 2" style="width:30%;"/>
+  <img src="WLS Position.png" alt="Image 3" style="width:30%;"/>
 </div>
 
 ---
