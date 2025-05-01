@@ -10,8 +10,8 @@ Task 5 prompt: [ChatGPT-4o prompt for Task 5](https://chatgpt.com/share/6811f1d8
     + [1.1 Principles of Each GNSS Technique](#11-principles-of-each-gnss-technique)
     + [1.2 Comparative Analysis](#12-comparative-analysis)
     + [1.3 Conclusion](#13-conclusion)
-  * [Task 2 - GNSS in Urban Areas](#task-2--gnss-in-urban-areas)
-    
+  * [Task 2 – GNSS in Urban Areas](#task-2--gnss-in-urban-areas)
+  * [Task 3 – GPS RAIM (Receiver Autonomous Integrity Monitoring)](#task-3--gps-raim-receiver-autonomous-integrity-monitoring)
   * [Task 4 – LEO Satellites for Navigation](#task-4--leo-satellites-for-navigation)
     + [4.1 Orbital Mechanics](#41-orbital-mechanics)
     + [4.2 Signal Capture](#42-signal-capture)
@@ -78,6 +78,7 @@ A **comprehensive summary** of each method:
 
 ---
 ## Task 2 – GNSS in Urban Areas
+**Solution to Task 2 – GNSS in Urban Areas**  
 
 Based on the analysis of the "Urban" dataset and the skymask provided, the following approach was developed to address GNSS positioning challenges:  
 
@@ -100,6 +101,59 @@ Based on the analysis of the "Urban" dataset and the skymask provided, the follo
   <img src="WLS Position.png" alt="Image 3" style="width:33%;"/>
 </div>
 
+---
+
+## Task 3 – GPS RAIM (Receiver Autonomous Integrity Monitoring)
+
+**3. 1. Weighted Least Squares (WLS) Positioning**  
+The GPS pseudorange measurement model is:  
+$$
+\Delta \mathbf{y} = \mathbf{G} \Delta \mathbf{x} + \boldsymbol{\varepsilon}, \quad \boldsymbol{\varepsilon} \sim \mathcal{N}(0, \mathbf{W}^{-1})
+$$  
+**Definitions**:  
+- \(\Delta \mathbf{y}\): Pseudorange residual vector (observed - predicted).  
+- \(\mathbf{G}\): Geometry matrix with unit vectors and clock bias terms.  
+- \(\Delta \mathbf{x}\): State correction vector (3D position + clock bias).  
+- \(\mathbf{W}\): Diagonal weight matrix with entries \(W_{ii} = 1/\sigma_i^2\), where \(\sigma_i\) is the pseudorange noise standard deviation for satellite \(i\).  
+
+The WLS solution is:  
+$$
+\Delta \hat{\mathbf{x}} = (\mathbf{G}^T \mathbf{W} \mathbf{G})^{-1} \mathbf{G}^T \mathbf{W} \Delta \mathbf{y}
+$$  
+Residual vector:  
+$$
+\mathbf{r} = \Delta \mathbf{y} - \mathbf{G} \Delta \hat{\mathbf{x}} = (\mathbf{I} - \mathbf{H}) \Delta \mathbf{y}, \quad \mathbf{H} = \mathbf{G} (\mathbf{G}^T \mathbf{W} \mathbf{G})^{-1} \mathbf{G}^T \mathbf{W}
+$$  
+
+
+**3.2. Fault Detection**  
+The test statistic is the weighted sum of squared residuals (WSSR):  
+$$
+T = \mathbf{r}^T \mathbf{W} \mathbf{r}
+$$  
+Under fault-free conditions, \(T\) follows a central chi-square distribution with \(n - 4\) degrees of freedom (\(n\): number of satellites). A fault is detected if:  
+$$
+T > T_{\text{threshold}}, \quad T_{\text{threshold}} = \chi^2_{n-4, 1 - P_{\text{fa}}}
+$$  
+where \(P_{\text{fa}} = 10^{-2}\) is the probability of false alarm.  
+
+**3. Fault Exclusion**  
+After detection, iteratively exclude each satellite \(i\), recompute \(T^{(i)}\), and identify the satellite minimizing \(T^{(i)}\). Exclude the satellite if \(T^{(i)} < T_{\text{threshold}}}\).  
+
+
+**3.4. 3D Protection Level (PL)**
+For each satellite \(i\), compute the maximum undetectable bias \(b_i\) using the non-central chi-square distribution:  
+$$
+P(T < T_{\text{threshold}} \mid \lambda_i) = P_{\text{md}}} = 10^{-7}
+$$  
+where \(\lambda_i = b_i^2 W_i (1 - H_{ii})^2\) is the non-centrality parameter. The sensitivity matrix \(\mathbf{S} = (\mathbf{G}^T \mathbf{W} \mathbf{G})^{-1} \mathbf{G}^T \mathbf{W}\) relates pseudorange errors to state errors. The 3D PL is:  
+$$
+\text{PL} = \max_i \left( b_i \cdot \sqrt{S_{1,i}^2 + S_{2,i}^2 + S_{3,i}^2} \right)
+$$  
+<div style="display: flex; justify-content: space-between;">
+  <img src="Task3-trajectory.png" alt="Image 4" style="width:45%;"/>
+  <img src="RAIM.png" alt="Image 5" style="width:45%;"/>
+</div>
 
 
 ---
