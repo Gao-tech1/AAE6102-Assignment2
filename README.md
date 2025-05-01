@@ -75,6 +75,33 @@ A **comprehensive summary** of each method:
   For smartphone navigation, the choice hinges on application needs and available infrastructure. **DGNSS** offers rapid sub-meter accuracy with minimal setup, making it ideal for broad coverage and low cost. **RTK** is unmatched for real-time centimeter precision but requires a robust correction link. **PPP** provides global coverage without a local base station, albeit with longer convergence. **PPP-RTK** strikes a balance by marrying PPP’s ubiquity with RTK’s speed, delivering high accuracy quickly, at the expense of specialized correction services and subscription fees. Choose the method that best aligns with your accuracy targets, latency tolerance, and system complexity.
 
 ---
+## Task 2 – LEO Satellites for Navigation
+**Solution to Task 2 – GNSS in Urban Areas**  
+
+Based on the analysis of the "Urban" dataset and the skymask provided, the following approach was developed to address GNSS positioning challenges:  
+
+1. **Problem Identification**:  
+   - Only **4 satellites** (SV1, SV3, SV11, SV18) were tracked in the urban environment.  
+   - The skymask analysis revealed that **SV3 and SV18** were likely **blocked** due to their elevation angles falling below the skymask-defined visibility threshold. However, with only 4 satellites available, excluding these satellites would leave insufficient measurements for positioning, making traditional exclusion methods impractical.  
+
+2. **Weighted Least Squares (WLS) Approach**:  
+   - To mitigate multipath/NLOS effects from potentially blocked satellites, **elevation-angle-based weighting** was applied during the position solution. Satellites at lower elevation angles (e.g., SV3, SV18) were assigned lower weights, while higher-elevation satellites (e.g., SV1, SV11) were given higher weights.  
+   - **Result**: This method slightly improved positioning accuracy compared to an unweighted solution but showed limited effectiveness due to the small number of satellites and persistent NLOS errors.  
+
+3. **Potential Enhancement: Path Simulation with Skymask**:  
+   - To further reduce NLOS errors, a **3D path simulation** based on the skymask and urban geometry is recommended. The steps include:  
+     - **Satellite Visibility Check**: Use the skymask to determine blocked azimuth-elevation regions. For each satellite, compare its azimuth/elevation with the skymask to flag potential NLOS conditions.  
+     - **NLOS Detection**: For satellites flagged as blocked (e.g., SV3, SV18), simulate signal reflection paths using a simplified urban canyon model (e.g., building heights and locations near the ground truth). Adjust pseudorange measurements by estimating additional path delays caused by reflections.  
+     - **Residual Analysis**: Iteratively refine the position solution by minimizing residuals between corrected pseudoranges and the geometric range calculated from the receiver’s estimated position.  
+<div style="display: flex; justify-content: space-between;">
+  <img src="image1.jpg" alt="Image 1" style="width:33%;"/>
+  <img src="image2.jpg" alt="Image 2" style="width:33%;"/>
+  <img src="image3.jpg" alt="Image 3" style="width:33%;"/>
+</div>
+
+
+
+---
 ## Task 4 – LEO Satellites for Navigation
 The deployment of Low Earth Orbit (LEO) communications constellations for positioning promises ultra-low latency and improved geometry diversity compared to Medium Earth Orbit (MEO) GNSS systems, yet is constrained by three fundamental challenges: orbital mechanics, signal capture, and system integration.  Each dimension critically influences the attainable accuracy, reliability, and continuity of opportunistic positioning services using non-dedicated LEO platforms.  Orbital mechanics determines how precisely a satellite’s trajectory can be known in real time; signal capture governs the recoverable observables from proprietary communication links; and system integration dictates how rapidly and robustly these novel measurements can be assimilated into established GNSS processing frameworks.  
 
